@@ -1,11 +1,19 @@
-form(action='/profile', method='POST')
-    .login-group
-        .form-group
-            label.sr-only(for='user') Username
-            input#user.form-control(type='text', name='newuser', placeholder='How do you want others to see you as?')
-    button.login-button(type='submit') submit
--if (nameSent) {
-    .login-form-main-message.show.success
-        strong Success- 
-        | Oh yeaaaaa!
--}
+doctype html
+html(lang="en")
+    head
+        include includes/head
+        
+    body
+        .container#main-frame
+            form(action='/profile', method='POST')
+                .form-group
+                    label.sr-only(for='user') Profile Name
+                    input#user.form-control(type='text', name='newuser', placeholder=profileName)
+                button.login-button(type='submit') Save
+            -if (nameSent) {
+                .login-form-main-message.show.success
+                    strong Success- 
+                    | Check your email for your unique one-time-use login link!
+            -}
+
+        include includes/script
