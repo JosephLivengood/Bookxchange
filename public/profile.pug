@@ -1,19 +1,15 @@
-//Pass through: nameSent,
-//Needs: profileName,
 doctype html
 html(lang="en")
     head
         include includes/head
         
     body
-        include includes/container
-    
+        .container#main-frame
             form(action='/profile', method='POST')
-                .login-group
-                    .form-group
-                        label.sr-only(for='user') Profile Name
-                        input#user.form-control(type='text', name='newuser', placeholder=profileName)
-                button.login-button(type='submit') submit
+                .form-group
+                    label.sr-only(for='user') Profile Name
+                    input#user.form-control(type='text', name='newuser', placeholder=profileName)
+                button.login-button(type='submit') Save
             -if (nameSent) {
                 .login-form-main-message.show.success
                     strong Success- 
