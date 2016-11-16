@@ -1,0 +1,73 @@
+//anticipated pass through: books[], profile-name
+doctype html
+html(lang="en")
+    head
+        include includes/head
+    body
+        .container#main-frame
+            //---[Main-Tile]---
+            .col-sm-6.col-md-4.col-lg-3.col-xl-2#main-tile
+                h1.display-3.m-y-0 Book Xchange
+                h1.display-3.text-xs-right.m-y-0
+                    small.text-muted книга
+                h2.display-4.text-xs-center.b-t-2 Hello 
+                    small.text-muted -привет
+                h2.display-4.text-xs-center#profile-name #{profile-name}
+                .container-fluid.m-a-1
+                    .row.text-xs-center
+                        .col-md-6
+                            a( href='/profile' )#profile-link Profile
+                        .col-md-6
+                            a( href='/logout' )#logout-link Logout
+                .container-fluid.m-a-1
+                    .row
+                        .col-md-3.text-xs-center
+                            dd #{pending-approved-requests}
+                        .col-md-9.text-xs-center.text-md-left
+                            dt requests approved
+                    .row
+                        .col-md-3.text-xs-center
+                            dd #{pending-incoming-requests}
+                        .col-md-9.text-xs-center.text-md-left
+                            dt incoming requests
+                            
+            //---[Book-Tiles]---##TEMP HARDCODED TO TEST STYLE
+        -for(i=0,i<15,i++) {
+            .col-sm-6.col-md-4.col-lg-3.col-xl-2
+                .card.text-xs-center
+                    .card-block
+                        h4.card-title Title
+                    img(src='/')
+                    .card-block
+                        p.card-text 247 pages
+                        button.btn.btn-outline-info(type="button", data-toggle="modal", data-target=".info-modal") Info
+                        a(href='/').btn.btn-primary Request
+                    .card-footer.text-muted
+                        2 hours ago
+        -}
+            .modal.fade.info-modal(tabindex="-1", role="dialog", aria-labelledby="info-modal", aria-hidden="true")
+                .modal-dialog.modal-sm
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="close")
+                                span(aria-hidden="true") &times;
+                            h4.text-xs-center Title
+                            .container(style="max-width:300px")
+                                .row.text-xs-center
+                                    .col-sm-6
+                                        dd Pages:
+                                    .col-sm-6.text-sm-left
+                                        dt 247
+                                    .col-sm-6
+                                        dd Author:
+                                    .col-sm-6.text-sm-left
+                                        dt The boss
+                                    .col-sm-6
+                                        dd Year:
+                                    .col-sm-6.text-sm-left
+                                        dt 2005
+
+                          
+            
+                        
+        include includes/script
