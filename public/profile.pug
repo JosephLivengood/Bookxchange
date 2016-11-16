@@ -3,10 +3,10 @@
 doctype html
 html(lang="en")
     head
-        include universal/head
+        include includes/head
         
     body
-        include universal/container
+        include includes/container
     
             form(action='/profile', method='POST')
                 .login-group
@@ -20,4 +20,4 @@ html(lang="en")
                     | Check your email for your unique one-time-use login link!
             -}
 
-        include universal/script
+        include includes/script
