@@ -1,0 +1,16 @@
+form(action='/login', method='POST')
+    .login-group
+        .form-group
+            label.sr-only(for='user') Username
+            input#user.form-control(type='email', name='user', placeholder='We just need your email...')
+    button.login-button(type='submit') submit
+-if (tokenSent) {
+    .login-form-main-message.show.success
+        strong Success- 
+        | Check your email for your login link!
+-} else {
+    .login-form-main-message.show.info
+        | We promise never to share or display your email, but you're welcome to use a 
+        a(href='https://securemail.hidemyass.com/') free anonymous email 
+        | if you want!
+-}

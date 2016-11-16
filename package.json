@@ -7,5 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joseph Livengood",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "emailjs": "^1.0.8",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "mongodb": "^2.2.11",
+    "passwordless": "^1.1.2",
+    "passwordless-mongostore": "^0.1.4",
+    "pug": "^2.0.0-beta6"
+  }
 }
