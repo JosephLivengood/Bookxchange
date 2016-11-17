@@ -2,9 +2,8 @@ doctype html
 html(lang="en")
     head
         include includes/head
-        
     body
-        .container#main-frame
+        .container.mx-auto#main-frame
             form(action='/profile', method='POST')
                 .form-group
                     label.sr-only(for='user') Profile Name

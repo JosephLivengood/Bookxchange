@@ -9,7 +9,11 @@ module.exports = function (app) {
     var userHandler = new UserHandler();
     
     app.route('/')
-        .get(function(req, res) { res.render(path + '/public/test') });
+        .get(function(req, res) { res.render(path + '/public/home', 
+        	{profileName:'Joseph',
+        	pendingApprovedRequests: 0,
+        	pendingIncomingRequests: 0}
+        )});
 
 	app.route('/login')
 		.get(userHandler.loadLogin)

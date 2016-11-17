@@ -4,74 +4,57 @@ html(lang="en")
     head
         include includes/head
     body
-        .container#main-frame
+        .container-fluid.mx-auto#main-frame
             //---[Main-Tile]---
-            .col-sm-6.col-md-4.col-lg-4.col-xl-4#main-tile
-                h1.display-4.m-y-0 Book Xchange
-                h1.display-4.text-xs-right.m-y-0
-                    small.text-muted книга
-                h1.text-xs-center.b-t-2 Hello 
-                    small.text-muted -привет
-                h1.text-xs-center#profile-name #{profile-name}
-                .container-fluid.m-a-1
-                    .row.text-xs-center
-                        .col-md-6
-                            a( href='/profile' )#profile-link Profile
-                        .col-md-6
-                            a( href='/logout' )#logout-link Logout
-                .container-fluid.m-a-1
-                    .row
-                        .col-xs-3.text-xs-center
-                            dd #{pending-approved-requests}
-                        .col-xs-9.text-xs-center.text-md-left
-                            dt requests approved
-                    .row
-                        .col-xs-3.text-xs-center
-                            dd #{pending-incoming-requests}
-                        .col-xs-9.text-xs-center.text-md-left
-                            dt incoming requests
-                            
-            //---[Book-Tiles]---##TEMP HARDCODED TO TEST STYLE
-        
-            .col-sm-6.col-md-4.col-lg-4.col-xl-4
+            .col-xs-12.col-sm-8.col-md-6.col-lg-4.col-xl-4#main-tile
                 .card.text-xs-center
                     .card-block
-                        h4.card-title Title
-                    img(src='/')
-                    .card-block
-                        p.card-text Text
-                        .container-fluid
-                            .row
-                                .col-xs-6
-                                    button.btn.btn-outline-info(type="button", data-toggle="modal", data-target=".info-modal") Info
-                                .col-xs-6
-                                    a(href='/').btn.btn-primary Req
-                    .card-footer.text-muted
-                        | 2 hours ago
-        
-            .modal.fade.info-modal(tabindex="-1", role="dialog", aria-labelledby="info-modal", aria-hidden="true")
-                .modal-dialog.modal-sm
-                    .modal-content
-                        .modal-header
-                            button.close(type="button", data-dismiss="modal", aria-label="close")
-                                span(aria-hidden="true") &times;
-                            h4.text-xs-center Title
-                            .container(style="max-width:300px")
-                                .row.text-xs-center
-                                    .col-sm-6
-                                        dt Pages:
-                                    .col-sm-6.text-sm-left
-                                        dd 247
-                                    .col-sm-6
-                                        dt Author:
-                                    .col-sm-6.text-sm-left
-                                        dd The boss
-                                    .col-sm-6
-                                        dt Year:
-                                    .col-sm-6.text-sm-left
-                                        dd 2005
-
-                          
+                        h1.display-4.card-title BookX
+                        h3.card-text
+                            em Hello, <strong>#{profileName}</strong>!
+                    ul.list-group.list-group-flush
+                        li.list-group-item #{pendingApprovedRequests} requests
+                        li.list-group-item #{pendingIncomingRequests} approvals
+                    .card-footer
+                        a.card-link(href='/profile')#profile-link Profile
+                        a.card-link(href='/logout')#logout-link Logout
+            //---[Book-Tiles]---##TEMP HARDCODED TO TEST STYLE
             
-                        
+            -for(i=0;i<16;i++)        
+                .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2
+                    .card.card-inverse.text-xs-center(style="background-color: #333; border-color: #333;")
+                        img.card-img-top.ma-1.img-fluid(src='https://books.google.com/books/content?id=etukl7GfrxQC&printsec=frontcover&img=1')
+                        .card-block(style="padding:.5em;")
+                            .btn-group(role='group', aria-label='Basic example')
+                                button.btn.btn-secondary(type='button', data-toggle="modal", data-target=".info-modal"+i)
+                                    i.fa.fa-info(aria-hidden='true')
+                                button.btn.btn-secondary(type='button')
+                                    i.fa.fa-envelope-o(aria-hidden='true')
+                            p.card-text.m-0
+                                small.text-muted 2 hours ago
+                .modal.fade(tabindex="-1", role="dialog", aria-labelledby="info-modal", aria-hidden="true", class="info-modal"+i)
+                    .modal-dialog.modal-lg
+                        .modal-content
+                            .modal-header
+                                button.close(type="button", data-dismiss="modal", aria-label="close")
+                                    span(aria-hidden="true") &times;
+                                h4.text-xs-center Title
+                                .container(style="max-width:500px")
+                                    .row.text-xs-center
+                                        .col-sm-6
+                                            dt Pages:
+                                        .col-sm-6.text-sm-left
+                                            dd 247
+                                        .col-sm-6
+                                            dt Author:
+                                        .col-sm-6.text-sm-left
+                                            dd The boss
+                                        .col-sm-6
+                                            dt Year:
+                                        .col-sm-6.text-sm-left
+                                            dd 2005
+                                        .col-sm-6
+                                            dt Summary:
+                                        .col-sm-6.text-sm-left
+                                            dd Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         include includes/script
