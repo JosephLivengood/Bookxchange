@@ -42,7 +42,7 @@ function RequestHandler() {
                     {isbn: requestDetails[0],
                     owneremail: requestDetails[1]},
                     [['_id','asc']],
-                    {$push:{ requests:{ doc } },
+                    {$push:{ requests:{ doc } } },
                     {},
                     function(err, object) {
                         if (err) console.log(err);
