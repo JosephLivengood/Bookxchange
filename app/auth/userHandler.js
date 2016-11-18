@@ -19,6 +19,9 @@ function UserHandler () {
                     if (err) console.log(err), callback(null, null);
                     callback(null, doc.value.email);
                     req.session.profile = doc.value.name;
+                    req.session.profilecountry = doc.value.country;
+                    req.session.profilerole = doc.value.role;
+                    //callback(null, doc.value.email);
                 }
             );
             db.close();
