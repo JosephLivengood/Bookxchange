@@ -30,10 +30,12 @@ function RequestHandler() {
             ).toArray(function(err, result) {
                 if (err) console.log(err);
                 console.log(result);
-                for(var i = 0; i < result.requests.length; i++) {
-                    if (result.requests[i].reqemail == req.user) {
-                        isDuplicate = true;
-                        return res.send('duplicate request');//HANDLE DUP    
+                if (result.requests) {
+                    for(var i = 0; i < result.requests.length; i++) {
+                        if (result.requests[i].reqemail == req.user) {
+                            isDuplicate = true;
+                            return res.send('duplicate request');//HANDLE DUP    
+                        }
                     }
                 }
             });
