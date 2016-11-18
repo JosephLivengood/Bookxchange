@@ -30,8 +30,8 @@ function RequestHandler() {
             ).toArray(function(err, result) {
                 if (err) console.log(err);
                 console.log(result);
-                for(i = 0; i < result.length; i++) {
-                    if (result[i].reqemail == req.user) {
+                for(var i = 0; i < result.requests.length; i++) {
+                    if (result.requests[i].reqemail == req.user) {
                         isDuplicate = true;
                         return res.send('duplicate request');//HANDLE DUP    
                     }
