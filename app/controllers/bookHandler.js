@@ -16,7 +16,7 @@ function BookHandler() {
 				{sort: {date: -1}}
 			).limit(17).toArray(function(err, result) {
                 if (err) console.log(err);
-				console.log(result);
+				//console.log(result);
                 res.render(path + '/public/home', {profileName:'Samantha',pendingApprovedRequests: 0,pendingIncomingRequests: 0,books:result});
             });
         });
@@ -67,6 +67,10 @@ function BookHandler() {
         }).on('error', function(e) {
             console.log('error: ' + e);
         });
+    };
+    
+    this.getUserBooks = function(req, res) {
+        
     };
 
 }

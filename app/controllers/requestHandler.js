@@ -8,7 +8,7 @@ function RequestHandler() {
     
     //status: sent>denied/approved>completed
     this.submitRequest = function(req, res) {
-        var requestDetails = req.body.ISBN_owner.split(' '); //[0]ISBN [1]owneremail
+        var requestDetails = req.body.ISBN_owner.split(' ');
         var doc = {
             "req": req.session.profile,
             "reqemail": req.user,
@@ -30,30 +30,30 @@ function RequestHandler() {
             ).toArray(function(err, result) {
                 if (err) console.log(err);
                 console.log(result);
-                if (result.requests) {
-                    for(var i = 0; i < result.requests.length; i++) {
-                        if (result.requests[i].reqemail == req.user) {
+                if (result[0].requests.length > 0) {
+                    for(var i = 0; i < result[0].requests.length; i++) {
+                        if (result[0].requests[i].reqemail == req.user) {
                             isDuplicate = true;
-                            return res.send('duplicate request');//HANDLE DUP    
+                            return res.send('duplicate request');  
                         }
                     }
                 }
+                if(!isDuplicate) {
+                  collection.findAndModify(
+                        {isbn: requestDetails[0],
+                        owneremail: requestDetails[1]},
+                        [['_id','asc']],
+                        {$push:{ requests: doc } },
+                        {},
+                        function(err, object) {
+                            if (err) console.log(err);
+                            console.log(object);
+                            res.send('Request saved');
+                        }
+                    );
+                }
+                db.close();
             });
-            if(!isDuplicate) {
-              collection.findAndModify(
-                    {isbn: requestDetails[0],
-                    owneremail: requestDetails[1]},
-                    [['_id','asc']],
-                    {$push:{ requests:{ doc } } },
-                    {},
-                    function(err, object) {
-                        if (err) console.log(err);
-                        console.log(object);
-                        res.send('Request saved');
-                        db.close();
-                    }
-                );
-            }
         });
     };
      

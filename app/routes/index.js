@@ -13,11 +13,8 @@ module.exports = function (app) {
     var requestHandler = new RequestHandler();
     
     app.route('/')
-        .get(function(req, res) { res.render(path + '/public/home', 
-        	{profileName:'Joseph',
-        	pendingApprovedRequests: 0,
-        	pendingIncomingRequests: 0}
-        )});
+		.get(bookHandler.getMostRecent)
+		.post(passwordless.restricted({failureRedirect: '/login'}),requestHandler.submitRequest);
 
 	app.route('/login')
 		.get(userHandler.loadLogin)
@@ -33,12 +30,7 @@ module.exports = function (app) {
 		.get(passwordless.logout(), function (req, res) { res.redirect('/login') });
 		
 	app.route('/test')
-		.post(bookHandler.checkISBN)
+		.post(passwordless.restricted({failureRedirect: '/login'}),bookHandler.checkISBN)
 		.get(function (req, res) { res.render(path + '/public/test')});
-		
-	app.route('/test2')
-		.get(bookHandler.getMostRecent)
-		.post(requestHandler.submitRequest);
-
     
 };
