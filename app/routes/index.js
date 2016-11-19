@@ -35,5 +35,8 @@ module.exports = function (app) {
  
 	app.route('/logout')
 		.get(passwordless.logout(), function (req, res) { res.redirect('/login') });
+		
+	app.route('/test')
+		.get(requestHandler.viewRequests);
     
 };

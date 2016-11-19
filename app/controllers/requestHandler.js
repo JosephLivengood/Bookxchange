@@ -10,6 +10,7 @@ function RequestHandler() {
     this.submitRequest = function(req, res) {
         var requestDetails = req.body.ISBN_owner.split(' ');
         var doc = {
+            "reqisbn": requestDetails[0],
             "req": req.session.profile,
             "reqemail": req.user,
             "reqdate": new Date(),
@@ -25,8 +26,8 @@ function RequestHandler() {
             collection.find(
                 {isbn: requestDetails[0],
                 owneremail: requestDetails[1]},
-                { requests : 1 },
-                {sort: {reqdate: -1}}
+                {requests : 1},
+                {sort: {date: 1}}
             ).toArray(function(err, result) {
                 if (err) console.log(err);
                 console.log(result);
@@ -52,6 +53,32 @@ function RequestHandler() {
                         }
                     );
                 }
+                db.close();
+            });
+        });
+    };
+    
+    this.viewRequests = function(req, res) {
+        mongo.connect(CONNECTION_STRING,function(err,db) {
+			if (err) console.log(err);
+            var collection=db.collection('books');
+            collection.find(
+                {owneremail: req.user,
+                $where:'this.requests.length>0'},
+				{sort: {date: -1}}
+			).toArray(function(err, result) {
+                if (err) console.log(err);
+				console.log(result);
+				var listRequests = [];
+				for(var i = 0; i < result.length; i++) {
+                    for(var x = 0; x < result[i].requests.length; x++) {
+                        result[i].requests[x].title = result[i].info.title;
+                        console.log(result[i].requests[x]);
+                        listRequests.push(result[i].requests[x]);
+                    }
+				}
+				listRequests.sort(function(a,b) {return (a.reqdate > b.reqdate) ? 1 : ((b.reqdate > a.reqdate) ? -1 : 0);} );
+                res.render(path + '/public/requests', {profileName:req.session.profile,user:req.user, books:listRequests});
                 db.close();
             });
         });

@@ -1,0 +1,77 @@
+//{ reqisbn: '9780590353427',
+    req: 'Joe',
+    reqemail: 'joeylivengood@gmail.com',
+    reqdate: Sat Nov 19 2016 20:58:04 GMT+0000 (UTC),
+    status: 'sent',
+    resisbn: '',
+    success: '',
+    title: 'Harry Potter and The Sorcerer\'s Stone' }
+
+doctype html
+html(lang="en")
+    head
+        include includes/head
+    body
+        .container.mx-auto#main-frame
+            #accordion(role='tablist', aria-multiselectable='true')
+                .card
+                    #headingTwo.card-header(role='tab')
+                        h5.mb-0
+                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
+                                | Active Requests
+                    #collapseTwo.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
+                        .card-block
+                            form(action='/deletebook', method='POST')
+                                table.table.align-center
+                                    thead
+                                        tr
+                                            th Cover
+                                            th Book
+                                            th Requester
+                                            th Date
+                                            th View
+                                    tbody
+                                        -for(i=0;i<books.length;i++)
+                                            tr
+                                                td
+                                                    img.img-fluid(src='http://covers.openlibrary.org/b/isbn/'+ books[i].reqisbn +'-S.jpg' style='')
+                                                td #{books[i].title} (#{books[i].reqisbn})
+                                                td #{books[i].req}
+                                                td #{pretty(books[i].reqdate)}
+                                                td
+                                                    button.btn.btn-sm.btn-link(type='submit', name='test', value=books[i].isbn)
+                                                        i.fa.fa-info-circle(aria-hidden='true')
+                .card
+                    #headingThree.card-header(role='tab')
+                        h5.mb-0
+                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='true', aria-controls='collapseThree')
+                                | Request History
+                    #collapseThree.collapse.in(role='tabpanel', aria-labelledby='headingThree')
+                        .card-block
+                            p Nothing here yet!   
+        include includes/script
+        
+- function pretty(i) {
+    -x =  new Date(i);
+    -today = new Date();
+    -var y = new Date(today-x);
+    -var yhours = y.getHours();
+    -var yminutes = y.getMinutes();
+    -var ydays = y.getDate()-1;
+    -var ymonths = y.getMonth();
+    -if (ymonths > 0) {
+        -if (ymonths==1) return ymonths+' month ago';
+        -return ymonths+' months ago';
+    -} else if (ydays > 0) {
+        -if (ydays==1) return ydays+' day ago';
+        -return ydays+' days ago';
+    -} else if (yhours > 0) {
+        -if (yhours==1) return yhours+' hour ago';
+        -return yhours+' hours ago';
+    -} else if (yminutes >= 1) {
+        -if (yminutes==1) return yminutes+' minute ago';
+        -return yminutes+' minutes ago';
+    -} else {
+        -return 'Just posted!'   
+    -}
+-}
