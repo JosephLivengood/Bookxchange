@@ -1,18 +1,95 @@
+//needsUpdate = true/false
+//loggedIn
+//loggedInAs
+//
+
 doctype html
 html(lang="en")
     head
         include includes/head
     body
         .container.mx-auto#main-frame
-            form(action='/profile', method='POST')
-                .form-group
-                    label.sr-only(for='user') Profile Name
-                    input#user.form-control(type='text', name='newuser', placeholder=profileName)
-                button.login-button(type='submit') Save
-            -if (nameSent) {
-                .login-form-main-message.show.success
-                    strong Success- 
-                    | Check your email for your unique one-time-use login link!
-            -}
-
+        
+            #accordion(role='tablist', aria-multiselectable='true')
+                .card
+                    #headingOne.card-header(role='tab')
+                        h5.mb-0
+                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                                | Profile
+                    #collapseOne.collapse.in(role='tabpanel', aria-labelledby='headingOne')
+                        .card-block
+                            form(action='/profile', method='POST')
+                                .form-group
+                                    label.sr-only(for='useremail') Private Email
+                                    input#user.form-control(type='email', name='useremail', placeholder=loggedInEmail, disabled)               
+                                    label.sr-only(for='newuser') Public Name
+                                    input#user.form-control(type='text', name='newuser', placeholder=loggedInAs)
+                                button.login-button(type='submit') Save
+                .card
+                    #headingTwo.card-header(role='tab')
+                        h5.mb-0
+                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
+                                | My Books
+                    #collapseTwo.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
+                        .card-block
+                            -if (needsUpdate)
+                                p Please update and save your public profile name first to add books.
+                            -if (!needsUpdate)
+                                form(action='/deletebook', method='POST')
+                                    table.table.table-sm.align-center
+                                        thead
+                                            tr
+                                                th  
+                                                th ISBN
+                                                th Title
+                                                th Author
+                                                th Added
+                                        tbody
+                                            -for(i=0;i<books.length;i++)
+                                                tr
+                                                    td
+                                                        button.btn.btn-sm.btn-link(type='submit', name='ISBN', value=books[i].isbn)
+                                                            i.fa.fa-trash(aria-hidden='true')
+                                                    td #{books[i].isbn}
+                                                    td #{books[i].info.title}
+                                                    td #{books[i].info.author}
+                                                    td #{pretty(books[i].date)}
+                                form(action='/mybooks', method='POST')
+                                    .form-group
+                                        label.sr-only(for='user') New book
+                                        input#user.form-control(type='text', name='ISBN', placeholder='ISBN')
+                                    button.login-button(type='submit') Add to library!
+                .card
+                    #headingThree.card-header(role='tab')
+                        h5.mb-0
+                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='true', aria-controls='collapseThree')
+                                | Request History
+                    #collapseThree.collapse.in(role='tabpanel', aria-labelledby='headingThree')
+                        .card-block
+                            p Nothing here yet!   
         include includes/script
+        
+- function pretty(i) {
+    -x =  new Date(i);
+    -today = new Date();
+    -var y = new Date(today-x);
+    -var yhours = y.getHours();
+    -var yminutes = y.getMinutes();
+    -var ydays = y.getDate()-1;
+    -var ymonths = y.getMonth();
+    -if (ymonths > 0) {
+        -if (ymonths==1) return ymonths+' month ago';
+        -return ymonths+' months ago';
+    -} else if (ydays > 0) {
+        -if (ydays==1) return ydays+' day ago';
+        -return ydays+' days ago';
+    -} else if (yhours > 0) {
+        -if (yhours==1) return yhours+' hour ago';
+        -return yhours+' hours ago';
+    -} else if (yminutes >= 1) {
+        -if (yminutes==1) return yminutes+' minute ago';
+        -return yminutes+' minutes ago';
+    -} else {
+        -return 'Just posted!'   
+    -}
+-}

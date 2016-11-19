@@ -22,15 +22,18 @@ module.exports = function (app) {
 
 	app.route('/profile')
 		.get(passwordless.restricted({failureRedirect: '/login'}), userHandler.showProfile)
-		.post(passwordless.restricted({failureRedirect: '/login'}), userHandler.updateName);
+		.post(passwordless.restricted({failureRedirect: '/login'}), userHandler.updateProfile);
 
 	app.route('/acceptlogin', passwordless.acceptToken());
  
+	app.route('/deletebook')
+		.post(passwordless.restricted({failureRedirect: '/login'}),bookHandler.deleteISBN);
+		
+	app.route('/mybooks')
+		.get(bookHandler.loadAddedBooksGrid)
+		.post(passwordless.restricted({failureRedirect: '/login'}),bookHandler.checkISBN);
+ 
 	app.route('/logout')
 		.get(passwordless.logout(), function (req, res) { res.redirect('/login') });
-		
-	app.route('/test')
-		.post(passwordless.restricted({failureRedirect: '/login'}),bookHandler.checkISBN)
-		.get(function (req, res) { res.render(path + '/public/test')});
     
 };

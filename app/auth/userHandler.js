@@ -3,8 +3,11 @@
 var mongo = require('mongodb').MongoClient;
 var path = process.cwd();
 var CONNECTION_STRING = process.env.db;
+var BookHandler = require(path + '/app/controllers/bookHandler.js');
 
 function UserHandler () {
+
+    var bookHandler = new BookHandler();
 
     this.sendToken = function(user, delivery, callback, req, res) {
         mongo.connect(CONNECTION_STRING,function(err,db) {
@@ -17,14 +20,14 @@ function UserHandler () {
                 {upsert:true, new: true },
                 function(err, doc) {
                     if (err) console.log(err), callback(null, null);
-                    callback(null, doc.value.email);
+                    //callback(null, doc.value.email);
                     req.session.profile = doc.value.name;
                     req.session.profilecountry = doc.value.country;
                     req.session.profilerole = doc.value.role;
-                    //callback(null, doc.value.email);
+                    callback(null, doc.value.email);
+                    db.close();
                 }
             );
-            db.close();
         });
     };
     
@@ -37,10 +40,17 @@ function UserHandler () {
     };
     
     this.showProfile = function(req, res) {
-        res.render(path + '/public/profile', {nameSent: false, loggedIn: Boolean(req.user), loggedInAs: req.session.profile}); 
+        var needsUpdate = (req.user =='Empty') ? true : false;
+        bookHandler.loadAddedBooksGrid(req.user, function(i) { res.render(path + '/public/profile',
+                {needsUpdate: needsUpdate,
+                loggedIn: Boolean(req.user),
+                loggedInAs: req.session.profile,
+                loggedInEmail: req.user,
+                books: i});
+        });
     };
-    
-    this.updateName = function(req, res) {
+
+    this.updateProfile = function(req, res) {
         var newuser = req.body.newuser;
         mongo.connect(CONNECTION_STRING,function(err,db) {
             if (err) console.log(err);
@@ -53,10 +63,11 @@ function UserHandler () {
                 function(err, doc) {
                     if (err) console.log(err);
                     req.session.profile = newuser;
-                    res.render(path + '/public/profile', {nameSent: true, loggedIn: Boolean(req.user), loggedInAs: req.session.profile});
+                    res.redirect('/profile');
+                    db.close();
                 }
             );
-            db.close();
+            //db.close();
         });
     };
 }

@@ -7,6 +7,8 @@ var CONNECTION_STRING = process.env.db;
 
 function BookHandler() {
 
+    var _this = this;
+
     this.getMostRecent = function(req, res) {
         mongo.connect(CONNECTION_STRING,function(err,db) {
 			if (err) console.log(err);
@@ -17,7 +19,8 @@ function BookHandler() {
 			).limit(17).toArray(function(err, result) {
                 if (err) console.log(err);
 				//console.log(result);
-                res.render(path + '/public/home', {profileName:'Samantha',pendingApprovedRequests: 0,pendingIncomingRequests: 0,books:result});
+                res.render(path + '/public/home', {profileName:req.session.profile,pendingApprovedRequests: 0,pendingIncomingRequests: 0,books:result});
+                db.close();
             });
         });
     };
@@ -54,23 +57,53 @@ function BookHandler() {
                     }
                     //COVER HANDLED CLIENTSIDE  http://covers.openlibrary.org/b/isbn/5353003098-L.jpg
                 };
-        		mongo.connect(CONNECTION_STRING, function(err, db) {
+                mongo.connect(CONNECTION_STRING, function(err, db) {
                     if (err) console.log(err);
                     var collection=db.collection('books');
                     collection.insert(doc, function(err, result) {
-                		if (err) console.log(err);
-                	});
-        		});
+                        if (err) console.log(err);
+                        res.redirect('/profile');
+                        db.close();
+                    });
+                });
                 console.log(doc);
-                res.send(JSON.stringify(doc));
             });
         }).on('error', function(e) {
             console.log('error: ' + e);
         });
     };
     
-    this.getUserBooks = function(req, res) {
+    this.deleteISBN = function(req, res) {
+        var ISBN = req.body.ISBN;
+        mongo.connect(CONNECTION_STRING, function(err, db) {
+            if (err) console.log(err);
+            var collection=db.collection('books');
+            collection.remove({isbn: ISBN, owneremail: req.user},
+            function(err, result) {
+                if (err) console.log(err);
+                res.redirect('/profile');
+                db.close();
+            });
+        });
+    };
+    
+    this.getReqBooks = function(req, res) {
         
+    };
+    
+    this.loadAddedBooksGrid = function(email, callback) {
+        mongo.connect(CONNECTION_STRING,function(err,db) {
+			if (err) console.log(err);
+            var collection=db.collection('books');
+            collection.find({owneremail: email},
+				{},
+				{sort: {date: -1}}
+			).toArray(function(err, result) {
+                if (err) console.log(err);
+                callback(result);
+                db.close();
+            });
+        });
     };
 
 }

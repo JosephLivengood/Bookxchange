@@ -77,13 +77,18 @@ html(lang="en")
     -var ydays = y.getDate()-1;
     -var ymonths = y.getMonth();
     -if (ymonths > 0) {
+        -if (ymonths==1) return ymonths+' month ago';
         -return ymonths+' months ago';
     -} else if (ydays > 0) {
+        -if (ydays==1) return ydays+' day ago';
         -return ydays+' days ago';
     -} else if (yhours > 0) {
         -if (yhours==1) return yhours+' hour ago';
         -return yhours+' hours ago';
-    -} else {
+    -} else if (yminutes >= 1) {
+        -if (yminutes==1) return yminutes+' minute ago';
         -return yminutes+' minutes ago';
+    -} else {
+        -return 'Just posted!'   
     -}
 -}
