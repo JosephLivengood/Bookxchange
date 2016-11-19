@@ -1,6 +1,5 @@
 html, body {
-  background-color: white;
-  background-image: url("http://i.istockimg.com/file_thumbview_approve/56107868/3/stock-illustration-56107868-background-texture-with-linen-grey-material-canvas-texture.jpg"); }
+  background-color: white; }
 
 #main-frame {
   max-width: 1200px;
@@ -8,8 +7,7 @@ html, body {
   margin: 3em 1em 3em 1em;
   padding: 2em 1em 2em 1em;
   border: 2px solid gray;
-  border-radius: 10px;
-  background-color: rgba(211, 211, 211, 0.4); }
+  border-radius: 10px; }
 
 .card-footer {
   margin: 0px !important; }
