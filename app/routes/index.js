@@ -36,7 +36,11 @@ module.exports = function (app) {
 	app.route('/logout')
 		.get(passwordless.logout(), function (req, res) { res.redirect('/login') });
 		
-	app.route('/test')
+	app.route('/requests')
 		.get(requestHandler.viewRequests);
+		
+	app.route('/viewRequest')
+		.get(bookHandler.getReqBooks)
+		.post(requestHandler.answerRequest);
     
 };

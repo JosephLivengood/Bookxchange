@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+    head
+        include includes/head
+    body
+        .container-fluid.mx-auto#main-frame
+            //---[Main-Tile]---
+            .col-xs-12#main-tile
+                .card.text-xs-center.card-inverse.card-success
+                    .card-block
+                        h1.display-4.card-title CONGRATULATIONS!!!
+                        h3.card-text
+                            em You have accepted a trade!
+                            .container-fluid
+                                .row
+                                    .col-sm-5.text-xs-center
+                                        img.img-fluid(src='http://covers.openlibrary.org/b/isbn/'+ requestedBook +'-L.jpg' style='max-height:400px;')
+                                    .col-sm-2.text-xs-center
+                                        i.fa.fa-arrows-h.fa-5x(aria-hidden='true', style='margin-top: 50%')
+                                    .col-sm-5.text-xs-center
+                                        img.img-fluid(src='http://covers.openlibrary.org/b/isbn/'+ responseBook +'-L.jpg' style='max-height:400px;')
+                    .card-footer
+                        h2 We've sent an email to both of you to work out shipment!
+                        p Your email is going to: #{responseEmail}
+                        p Their email is going to: #{requestedEmail}
+                        h4 The email will contain all of this information and both your emails!
+        include includes/script

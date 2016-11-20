@@ -7,19 +7,21 @@ var CONNECTION_STRING = process.env.db;
 
 function BookHandler() {
 
-    var _this = this;
-
     this.getMostRecent = function(req, res) {
         mongo.connect(CONNECTION_STRING,function(err,db) {
 			if (err) console.log(err);
             var collection=db.collection('books');
             collection.find({},
-				{ requests: 0},
+				{requests: 0},
 				{sort: {date: -1}}
 			).limit(17).toArray(function(err, result) {
                 if (err) console.log(err);
 				//console.log(result);
-                res.render(path + '/public/home', {profileName:req.session.profile,pendingApprovedRequests: 0,pendingIncomingRequests: 0,books:result});
+                res.render(path + '/public/home',
+                    {profileName:req.session.profile,
+                    pendingApprovedRequests: 0,
+                    pendingIncomingRequests: 0,
+                    books:result});
                 db.close();
             });
         });
@@ -88,6 +90,37 @@ function BookHandler() {
     };
     
     this.getReqBooks = function(req, res) {
+        var requestedBook = req.query.isbn;
+        var requester = req.query.req;
+        mongo.connect(CONNECTION_STRING,function(err,db) {
+			if (err) console.log(err);
+            var collection=db.collection('books');
+            collection.find(
+                {isbn: requestedBook,
+                owneremail: req.user},
+				{requests: 1},
+				{sort: {date: -1}}
+			).toArray(function(err, result) {
+                if (err) console.log(err);
+				for(var i = 0; i < result[0].requests.length; i++) {
+                    if (result[0].requests[i].req == requester) {
+                        var requesterEmail = result[0].requests[i].reqemail;
+                        collection.find(
+                            {owneremail: requesterEmail},
+                            {requests: 0},
+                            {sort: {date: -1}}
+                        ).toArray(function(err, result2) {
+                            if (err) console.log(err);
+                            res.render(path + '/public/requestersbooks',
+                                {profileName:req.session.profile,
+                                books: result2});
+                        });
+                        break;
+                    }
+				}
+            });
+        });
+        
         
     };
     

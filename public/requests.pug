@@ -21,7 +21,6 @@ html(lang="en")
                                 | Active Requests
                     #collapseTwo.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
                         .card-block
-                            form(action='/deletebook', method='POST')
                                 table.table.align-center
                                     thead
                                         tr
@@ -39,7 +38,7 @@ html(lang="en")
                                                 td #{books[i].req}
                                                 td #{pretty(books[i].reqdate)}
                                                 td
-                                                    button.btn.btn-sm.btn-link(type='submit', name='test', value=books[i].isbn)
+                                                    a(href='/viewRequest?isbn='+books[i].reqisbn+'&req='+books[i].req)
                                                         i.fa.fa-info-circle(aria-hidden='true')
                 .card
                     #headingThree.card-header(role='tab')

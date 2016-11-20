@@ -16,13 +16,12 @@ function UserHandler () {
             collection.findAndModify(
                 {email:user.toLowerCase()},
                 [['_id','asc']],
-                {$setOnInsert:{email: user.toLowerCase(), name: 'Empty', country: 'Empty', success: 'false', role: 'user'}},
+                {$setOnInsert:{email: user.toLowerCase(), name: 'Empty',history:[], success: 'false', role: 'user'}},
                 {upsert:true, new: true },
                 function(err, doc) {
                     if (err) console.log(err), callback(null, null);
                     //callback(null, doc.value.email);
                     req.session.profile = doc.value.name;
-                    req.session.profilecountry = doc.value.country;
                     req.session.profilerole = doc.value.role;
                     callback(null, doc.value.email);
                     db.close();

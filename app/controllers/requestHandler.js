@@ -6,17 +6,13 @@ var CONNECTION_STRING = process.env.db;
 
 function RequestHandler() {
     
-    //status: sent>denied/approved>completed
     this.submitRequest = function(req, res) {
         var requestDetails = req.body.ISBN_owner.split(' ');
         var doc = {
             "reqisbn": requestDetails[0],
             "req": req.session.profile,
             "reqemail": req.user,
-            "reqdate": new Date(),
-            "status": "sent",
-            "resisbn": "",
-            "success": ""
+            "reqdate": new Date()
         };
         console.log(requestDetails+JSON.stringify(doc));
         mongo.connect(CONNECTION_STRING, function(err, db) {
@@ -83,14 +79,57 @@ function RequestHandler() {
             });
         });
     };
-     
-    //buttonvalues:deny/approve (isbn+' '+owneremail+' '+approved/denied)
-    this.answerRequest = function(req, res) {
-        var answerRequestDetails = req.body.answer.split(' '); //[0]ISBN [1]owneremail [2]approved/denied
-        //MONGOSTORE
-        //EMAIL
-    };
 
+    this.answerRequest = function(req, res) {
+        var answerRequestDetails = req.body.ISBN_owner.split(' '); //[0]ISBN(000=denied) [1]owneremail
+        var requestedBook = req.query.isbn;
+        var requestedEmail = answerRequestDetails[1];
+        var responseBook = answerRequestDetails[0];
+        var responseEmail = req.user;
+        var historyDoc = {
+            "accepted": false,
+            "requestedBook": requestedBook,
+            "requestedEmail": requestedEmail,
+            "responseBook": responseBook,
+            "responseEmail": responseEmail,
+            "date": new Date()
+        };
+        mongo.connect(CONNECTION_STRING,function(err,db) {
+			if (err) console.log(err);
+            var collection=db.collection('books');   
+            if (responseBook == '000') {
+                collection.update(
+                    {isbn: requestedBook},
+                    {$pull: { 'requests': { reqemail: requestedEmail } } }
+                );
+                console.log(responseEmail+' declined trade from '+requestedEmail+' ('+requestedBook+')');
+                res.redirect('/requests');
+            } else {
+                historyDoc.accepted=true;
+                collection.remove(
+                    {isbn: requestedBook,
+                    owneremail: responseEmail}
+                );
+                collection.remove(
+                    {isbn: responseBook,
+                    owneremail: requestedEmail}
+                );
+                console.log(responseEmail+' accepted trade from '+requestedEmail+' ('+requestedBook+' for '+responseBook+')');
+                res.render(path + '/public/approvedRequest',
+                    {requestedBook: requestedBook,
+                    requestedEmail: requestedEmail,
+                    responseBook: responseBook,
+                    responseEmail: responseEmail}
+                );
+            }
+            db.collection('users').update(
+                {$or:[{email: requestedEmail},{email: responseEmail}]},
+                {$push:{'history':{historyDoc}}},
+                {multi: true}
+            );
+        });
+        
+    };
 
 }
 

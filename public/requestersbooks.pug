@@ -6,20 +6,13 @@ html(lang="en")
     body
         .container-fluid.mx-auto#main-frame
             //---[Main-Tile]---
-            .col-xs-12.col-sm-8.col-md-6.col-lg-4.col-xl-4#main-tile
-                .card.text-xs-center
+            .col-xs-12#main-tile
+                .card.text-xs-center.card-inverse.card-success
                     .card-block
-                        h1.display-4.card-title BookX
+                        h1.display-4.card-title #{books[0].owner}'s books!
                         h3.card-text
-                            em Hello, <strong>#{profileName}</strong>!
-                    ul.list-group.list-group-flush
-                        li.list-group-item #{pendingApprovedRequests} requests
-                        li.list-group-item #{pendingIncomingRequests} approvals
-                    .card-footer
-                        a.card-link(href='/profile')#profile-link Profile
-                        a.card-link(href='/logout')#logout-link Logout
-                        
-            //---[Book-Tiles]---...POSTS req.body.ISBN_owner of book user is requesting.
+                            em Choose one of their books to <strong>accept</strong> the trade!
+            //---[Book-Tiles]---...POSTS req.body.ISBN_owner of book user is res'ing the req with. Switch to _id
             form(method='POST')
                 -for(i=0;i<books.length;i++)
                     .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2
@@ -29,8 +22,8 @@ html(lang="en")
                                 .btn-group(role='group', aria-label='Basic example')
                                     button.btn.btn-secondary(type='button', data-toggle="modal", data-target=".info-modal"+books[i].isbn)
                                         i.fa.fa-info(aria-hidden='true')
-                                    button.btn.btn-secondary(type='submit', name='ISBN_owner', value=books[i].isbn+' '+books[i].owneremail)
-                                        i.fa.fa-envelope-o(aria-hidden='true')
+                                    button.btn.btn-success(type='submit', name='ISBN_owner', value=books[i].isbn+' '+books[i].owneremail)
+                                        i.fa.fa-check-circle(aria-hidden='true')
                                 p.card-text.m-0
                                     small.text-muted #{pretty(books[i].date)}
                     .modal.fade(tabindex="-1", role="dialog", aria-labelledby="info-modal", aria-hidden="true", class="info-modal"+books[i].isbn)
@@ -61,11 +54,17 @@ html(lang="en")
                                             .col-sm-6
                                                 dt Submitted by:
                                             .col-sm-6.text-sm-left
-                                                dd #{books[i].owneremail} (#{books[i].ownercountry})
+                                                dd #{books[i].owneremail}
                                             .col-sm-6
                                                 dt Date:
                                             .col-sm-6.text-sm-left
                                                 dd #{books[i].date}
+                .col-xs-12#main-tile
+                    .card.text-xs-center.card-inverse.card-danger
+                        .card-block
+                            button.btn.btn-danger(type='submit', name='ISBN_owner', value='000 '+books[0].owneremail)
+                                h1.display-4.card-title DECLINE #{books[0].owner}'s TRADE
+                        
         include includes/script
         
 - function pretty(i) {
