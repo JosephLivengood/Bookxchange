@@ -74,8 +74,14 @@ function RequestHandler() {
                     }
 				}
 				listRequests.sort(function(a,b) {return (a.reqdate > b.reqdate) ? 1 : ((b.reqdate > a.reqdate) ? -1 : 0);} );
-                res.render(path + '/public/requests', {profileName:req.session.profile,user:req.user, books:listRequests});
-                db.close();
+				db.collection('users').find(
+				    {email: req.user}
+				).toArray(function(err, result2) {
+                    if (err) console.log(err);
+                    var historyDocs = result2[0].history;
+                    res.render(path + '/public/requests', {profileName:req.session.profile, user:req.user, books:listRequests, historyDocs: historyDocs});
+                    db.close();
+				});
             });
         });
     };

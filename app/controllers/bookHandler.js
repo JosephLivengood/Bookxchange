@@ -14,15 +14,27 @@ function BookHandler() {
             collection.find({},
 				{requests: 0},
 				{sort: {date: -1}}
-			).limit(17).toArray(function(err, result) {
+			).limit(30).toArray(function(err, result) {
                 if (err) console.log(err);
-				//console.log(result);
-                res.render(path + '/public/home',
-                    {profileName:req.session.profile,
-                    pendingApprovedRequests: 0,
-                    pendingIncomingRequests: 0,
-                    books:result});
-                db.close();
+                collection.find(
+                    {owneremail: req.user,
+                    $where:'this.requests.length>0'},
+                    {sort: {date: -1}}
+                ).toArray(function(err, result2) {
+                    if (err) console.log(err);
+                    var requestCount = 0;
+                    for(var i = 0; i < result2.length; i++) {
+                        for(var x = 0; x < result2[i].requests.length; x++) {
+                            requestCount++;
+                        }
+                    }
+                    res.render(path + '/public/home',
+                        {profileName:req.session.profile,
+                        requests: requestCount,
+                        books:result
+                        });
+                    db.close();
+                });
             });
         });
     };
@@ -37,7 +49,6 @@ function BookHandler() {
             });
             result.on('end', function() {
                 var response = JSON.parse(body);
-                console.log(response);
                 var r = response[ISBN];
                 if (!r) return res.send('invalid');
                 if (!r.authors) r.authors = [{"name":"-"}];
@@ -68,7 +79,6 @@ function BookHandler() {
                         db.close();
                     });
                 });
-                console.log(doc);
             });
         }).on('error', function(e) {
             console.log('error: ' + e);
