@@ -16,56 +16,64 @@ html(lang="en")
                             a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
                                 | Profile
                     #collapseOne.collapse.in(role='tabpanel', aria-labelledby='headingOne')
-                        .card-block
-                            form(action='/profile', method='POST')
-                                .form-group
-                                    label.sr-only(for='useremail') Private Email
-                                    input#user.form-control(type='email', name='useremail', placeholder=loggedInEmail, disabled)               
-                                    label.sr-only(for='newuser') Public Name
-                                    input#user.form-control(type='text', name='newuser', placeholder=loggedInAs)
-                                button.login-button(type='submit') Save
+                        .card-block(style='width=400px;')
+                            .container
+                                form(action='/profile', method='POST')
+                                    .form-group.row
+                                        label(for='userem').col-sm-3.col-form-label Email Address
+                                        label.sr-only(for='useremail') Email Address
+                                        .col-sm-9
+                                            input#userem.form-control(type='email', name='useremail', placeholder=loggedInEmail, disabled)
+                                            small#emailHelp.form-text.text-muted This is ONLY shared if you accept a trade from another user!
+                                    .form-group.row
+                                        label(for='user').col-sm-3.col-form-label Profile Name
+                                        label.sr-only(for='newuser') Public Name
+                                        .col-sm-9
+                                            input#user.form-control(type='text', name='newuser', placeholder=loggedInAs)
+                                            small#emailHelp.form-text.text-muted This is how others will normally see you!
+                                    .offset-sm-3.col-sm-9
+                                        button.btn.btn-primary.login-button(type='submit') Save
                 .card
-                    #headingTwo.card-header(role='tab')
-                        h5.mb-0
-                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
-                                | My Books
-                    #collapseTwo.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
-                        .card-block
-                            -if (needsUpdate)
-                                p Please update and save your public profile name first to add books.
-                            -if (!needsUpdate)
-                                form(action='/deletebook', method='POST')
-                                    table.table.table-sm.align-center
-                                        thead
-                                            tr
-                                                th  
-                                                th ISBN
-                                                th Title
-                                                th Author
-                                                th Added
-                                        tbody
-                                            -for(i=0;i<books.length;i++)
+                    -if(loggedInAs == 'Empty')
+                        #headingTwo.card-header(role='tab')
+                            h5.mb-0
+                                a(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
+                                    .text-muted Complete your profile to add books!
+                    -else
+                        #headingTwo.card-header(role='tab')
+                            h5.mb-0
+                                a(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
+                                    | My Books
+                        #collapseTwo.collapse(role='tabpanel', aria-labelledby='headingTwo')
+                            .card-block
+                                -if (needsUpdate)
+                                    p Please update and save your public profile name first to add books.
+                                -if (!needsUpdate)
+                                    form(action='/deletebook', method='POST')
+                                        table.table.table-sm.align-center
+                                            thead
                                                 tr
-                                                    td
-                                                        button.btn.btn-sm.btn-link(type='submit', name='ISBN', value=books[i].isbn)
-                                                            i.fa.fa-trash(aria-hidden='true')
-                                                    td #{books[i].isbn}
-                                                    td #{books[i].info.title}
-                                                    td #{books[i].info.author}
-                                                    td #{pretty(books[i].date)}
-                                form(action='/mybooks', method='POST')
-                                    .form-group
-                                        label.sr-only(for='user') New book
-                                        input#user.form-control(type='text', name='ISBN', placeholder='ISBN')
-                                    button.login-button(type='submit') Add to library!
-                .card
-                    #headingThree.card-header(role='tab')
-                        h5.mb-0
-                            a(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='true', aria-controls='collapseThree')
-                                | Request History
-                    #collapseThree.collapse.in(role='tabpanel', aria-labelledby='headingThree')
-                        .card-block
-                            p Nothing here yet!   
+                                                    th  
+                                                    th ISBN
+                                                    th Title
+                                                    th Author
+                                                    th Added
+                                            tbody
+                                                -for(i=0;i<books.length;i++)
+                                                    tr
+                                                        td
+                                                            button.btn.btn-sm.btn-link(type='submit', name='ISBN', value=books[i].isbn)
+                                                                i.fa.fa-trash(aria-hidden='true')
+                                                        td #{books[i].isbn}
+                                                        td #{books[i].info.title}
+                                                        td #{books[i].info.author}
+                                                        td #{pretty(books[i].date)}
+                                    .submitisbn(style="width:500px; margin: 0 auto").text-xs-center.align-center
+                                        form.form-inline(action='/mybooks', method='POST')
+                                            .form-group
+                                                label.sr-only(for='user') New book
+                                                input#user.form-control(type='text', name='ISBN', placeholder='ISBN with no dashes or spaces',style='width: 270px;')
+                                            button.btn.btn-success.login-button(type='submit') Add to library!
         include includes/script
         
 - function pretty(i) {

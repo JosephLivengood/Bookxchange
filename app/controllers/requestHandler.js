@@ -15,6 +15,7 @@ function RequestHandler() {
             "reqdate": new Date()
         };
         console.log(requestDetails+JSON.stringify(doc));
+        if (req.user == requestDetails[1]) return res.redirect('/');
         mongo.connect(CONNECTION_STRING, function(err, db) {
             if (err) console.log(err);
             var collection = db.collection('books');
@@ -31,7 +32,7 @@ function RequestHandler() {
                     for(var i = 0; i < result[0].requests.length; i++) {
                         if (result[0].requests[i].reqemail == req.user) {
                             isDuplicate = true;
-                            return res.send('duplicate request');  
+                            return res.redirect('/');  
                         }
                     }
                 }
@@ -45,7 +46,7 @@ function RequestHandler() {
                         function(err, object) {
                             if (err) console.log(err);
                             console.log(object);
-                            res.send('Request saved');
+                            res.redirect('/');
                         }
                     );
                 }
@@ -76,9 +77,11 @@ function RequestHandler() {
 				listRequests.sort(function(a,b) {return (a.reqdate > b.reqdate) ? 1 : ((b.reqdate > a.reqdate) ? -1 : 0);} );
 				db.collection('users').find(
 				    {email: req.user}
-				).toArray(function(err, result2) {
+				).sort({date: -1}).toArray(function(err, result2) {
                     if (err) console.log(err);
+                    //HANDLE NO HISTORY!
                     var historyDocs = result2[0].history;
+                    console.log(historyDocs);
                     res.render(path + '/public/requests', {profileName:req.session.profile, user:req.user, books:listRequests, historyDocs: historyDocs});
                     db.close();
 				});

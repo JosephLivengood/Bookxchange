@@ -55,7 +55,31 @@ html(lang="en")
                                 | Request History
                     #collapseThree.collapse.in(role='tabpanel', aria-labelledby='headingThree')
                         .card-block
-                            p Nothing here yet!   
+                            -for(i=0;i<historyDocs.length;i++)
+                                if(historyDocs[i].historyDoc.accepted)
+                                    if(user==historyDocs[i].historyDoc.requestedEmail)
+                                        p <strong>#{historyDocs[i].historyDoc.responseEmail}</strong> accepted your request for 
+                                            a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
+                                            | in exchange for 
+                                            a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.responseBook +'-M.jpg') #{historyDocs[i].historyDoc.responseBook} 
+                                            | #{pretty(historyDocs[i].historyDoc.date)}
+                                    else
+                                        p You accepted <strong>#{historyDocs[i].historyDoc.responseEmail}</strong>'s request for
+                                            a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
+                                            | in exchange for 
+                                            a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.responseBook +'-M.jpg') #{historyDocs[i].historyDoc.responseBook} 
+                                            | #{pretty(historyDocs[i].historyDoc.date)}
+                                else
+                                    if(user==historyDocs[i].historyDoc.requestedEmail)
+                                        p Your request for
+                                            a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
+                                            | was denied #{pretty(historyDocs[i].historyDoc.date)}
+                                    else
+                                        p You denied a request for
+                                            a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
+                                            | #{pretty(historyDocs[i].historyDoc.date)}
+                                        
+                                
         include includes/script
         
 - function pretty(i) {
