@@ -16,7 +16,7 @@ module.exports = function (app) {
     passwordless.init(new MongoStore(CONNECTION_STRING), { allowTokenReuse: true }); //reuse
     passwordless.addDelivery(
         function(tokenToSend, uidToSend, recipient, callback) {
-            var host = 'https://bookx-livengood.c9users.io/acceptlogin';
+            var host = 'https://livebookx.herokuapp.com/acceptlogin';
             smtpServer.send({
                 text:    'Hello!\nAccess your account here: ' 
                 + host + '?token=' + tokenToSend + '&uid=' 
