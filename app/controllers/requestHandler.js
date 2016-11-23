@@ -90,7 +90,7 @@ function RequestHandler() {
     };
 
     this.answerRequest = function(req, res) {
-        var answerRequestDetails = req.body.ISBN_owner.split(' '); //[0]ISBN(000=denied) [1]owneremail
+        var answerRequestDetails = req.body.ISBN_owner.split('#'); //[0]ISBN(000=denied) [1]owneremail
         var requestedBook = req.query.isbn;
         var requestedEmail = answerRequestDetails[1];
         var responseBook = answerRequestDetails[0];
