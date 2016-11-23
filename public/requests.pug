@@ -68,14 +68,14 @@ html(lang="en")
                                             a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.responseBook +'-M.jpg') #{historyDocs[i].historyDoc.responseBook} 
                                             | #{pretty(historyDocs[i].historyDoc.date)}
                                     else
-                                        p You accepted <strong>#{historyDocs[i].historyDoc.responseEmail}</strong>'s request for
+                                        p You accepted <strong>#{historyDocs[i].historyDoc.requestedEmail}</strong>'s request for
                                             a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
                                             | in exchange for 
                                             a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.responseBook +'-M.jpg') #{historyDocs[i].historyDoc.responseBook} 
                                             | #{pretty(historyDocs[i].historyDoc.date)}
                                 else
                                     if(user==historyDocs[i].historyDoc.requestedEmail)
-                                        p Your request for
+                                        p Your request for 
                                             a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
                                             | was denied #{pretty(historyDocs[i].historyDoc.date)}
                                     else

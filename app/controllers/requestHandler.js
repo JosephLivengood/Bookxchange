@@ -15,7 +15,7 @@ function RequestHandler() {
             "reqdate": new Date()
         };
         console.log(requestDetails+JSON.stringify(doc));
-        //if (req.user == requestDetails[1]) return res.redirect('/');
+        if (req.user == requestDetails[1]) return res.redirect('/');
         mongo.connect(CONNECTION_STRING, function(err, db) {
             if (err) console.log(err);
             var collection = db.collection('books');
@@ -90,7 +90,7 @@ function RequestHandler() {
     };
 
     this.answerRequest = function(req, res) {
-        var answerRequestDetails = req.body.ISBN_owner.split(' '); //[0]ISBN(000=denied) [1]owneremail
+        var answerRequestDetails = req.body.ISBN_owner.split('#'); //[0]ISBN(000=denied) [1]owneremail
         var requestedBook = req.query.isbn;
         var requestedEmail = answerRequestDetails[1];
         var responseBook = answerRequestDetails[0];
