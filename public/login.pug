@@ -4,19 +4,43 @@ html(lang="en")
         include includes/head
     body
         .container.mx-auto#main-frame
-            form(action='/login', method='POST')
-                .form-group
-                    label.sr-only(for='user') Username
-                    input#user.form-control(type='email', name='user', placeholder='We just need your email...')
-                button.login-button(type='submit') submit
-            -if (tokenSent) {
-                .login-form-main-message.show.success
-                    strong Success- 
-                    | Check your email for your login link!
-            -} else {
-                .login-form-main-message.show.info
-                    | We promise never to share or display your email, but you're welcome to use a 
-                    a(href='https://securemail.hidemyass.com/') free anonymous email 
-                    | if you want!
-            -}
+            .container(style="width:75%")
+                h1.display-2.card-title.text-xs-center.mb-3 BookX
+                form(action='/login', method='POST')
+                    .form-group.row
+                        label(for='user').col-sm-2.col-form-label Email Address:
+                        label.sr-only(for='user') Email Address
+                        .col-sm-8
+                            input#user.form-control(type='email', name='user', placeholder='Please enter your email')
+                            small#emailHelp.form-text This is kept private unless you accept a trade request or have a trade request accepted!
+                            small#emailHelp.form-text 
+                                | You're of course welcome to use a 
+                                a(href='https://securemail.hidemyass.com/') free anonymous email 
+                                | if you want!
+                        .col-sm-2
+                            button.btn.btn-primary.login-button(type='submit') Login
+                -if (tokenSent) {
+                    .offset-sm-2.col-sm-8.text-xs-center
+                        h5
+                            strong Success- 
+                            | Check your email for your login link!
+                -}
+                
+            .row(style='margin-top: 130px;')
+                .text-xs-center
+                    h5.how.mb-0 How's that work?!
+                        .container-fluid(style='margin-top: 20px;')
+                            .row
+                                .col-md-4
+                                    i.fa.fa-4x.fa-keyboard-o(aria-hidden='true')
+                                    p You type in an email!
+                                .col-md-4
+                                    i.fa.fa-4x.fa-envelope(aria-hidden='true')
+                                    p We email you a unique one-time link!
+                                .col-md-4
+                                    i.fa.fa-4x.fa-link(aria-hidden='true')
+                                    p You click that link and get logged in!
+                        p(style='font-size:16px!important; color:#333; margin-top:30px;') No trying to think of a password to give us. Stay secure people!
+            
+            
         include includes/script

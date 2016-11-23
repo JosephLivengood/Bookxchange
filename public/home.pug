@@ -5,18 +5,33 @@ html(lang="en")
     body
         .container-fluid.mx-auto#main-frame
             //---[Main-Tile]---
-            .col-xs-12.col-sm-8.col-md-6.col-lg-4.col-xl-4#main-tile
-                .card.text-xs-center
-                    .card-block
-                        h1.display-4.card-title BookX
-                        h3.card-text
-                            em Hello, <strong>#{profileName}</strong>!
-                    ul.list-group.list-group-flush
-                        li.list-group-item 
-                            a(href='/requests') #{requests} requests
-                    .card-footer
-                        a.card-link(href='/profile')#profile-link Profile
-                        a.card-link(href='/logout')#logout-link Logout
+            
+            if(!profileName)
+                .col-xs-12.col-sm-8.col-md-6.col-lg-4.col-xl-4#main-tile
+                    .card.text-xs-center
+                        .card-block
+                            h1.display-4.card-title BookX
+                            h3.card-text
+                                em Hello, <strong>STRANGER</strong>!
+                        ul.list-group.list-group-flush
+                            li.list-group-item 
+                                a(href='/login') Make an account to start trading!
+                        .card-footer
+                            .text-muted Profile
+                            a.card-link(href='/login')#logout-link Login        
+            -else
+                .col-xs-12.col-sm-8.col-md-6.col-lg-4.col-xl-4#main-tile
+                    .card.text-xs-center
+                        .card-block
+                            h1.display-4.card-title BookX
+                            h3.card-text
+                                em Hello, <strong>#{profileName}</strong>!
+                        ul.list-group.list-group-flush
+                            li.list-group-item 
+                                a(href='/requests') #{requests} requests
+                        .card-footer
+                            a.card-link(href='/profile')#profile-link Profile
+                            a.card-link(href='/logout')#logout-link Logout
                         
             //---[Book-Tiles]---...POSTS req.body.ISBN_owner of book user is requesting.
             form(method='POST')

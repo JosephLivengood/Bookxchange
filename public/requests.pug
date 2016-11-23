@@ -21,6 +21,10 @@ html(lang="en")
         include includes/head
     body
         .container.mx-auto#main-frame
+            ol.breadcrumb
+                li.breadcrumb-item
+                    a(href='/') BookX
+                li.breadcrumb-item.active Requests
             #accordion(role='tablist', aria-multiselectable='true')
                 .card
                     #headingTwo.card-header(role='tab')
@@ -75,7 +79,7 @@ html(lang="en")
                                             a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
                                             | was denied #{pretty(historyDocs[i].historyDoc.date)}
                                     else
-                                        p You denied a request for
+                                        p You denied a request for 
                                             a(href='http://covers.openlibrary.org/b/isbn/'+ historyDocs[i].historyDoc.requestedBook +'-M.jpg') #{historyDocs[i].historyDoc.requestedBook} 
                                             | #{pretty(historyDocs[i].historyDoc.date)}
                                         

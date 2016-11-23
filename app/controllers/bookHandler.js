@@ -14,7 +14,7 @@ function BookHandler() {
             collection.find({},
 				{requests: 0},
 				{sort: {date: -1}}
-			).limit(30).toArray(function(err, result) {
+			).limit(60).toArray(function(err, result) {
                 if (err) console.log(err);
                 collection.find(
                     {owneremail: req.user,

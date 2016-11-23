@@ -5,6 +5,12 @@ html(lang="en")
         include includes/head
     body
         .container-fluid.mx-auto#main-frame
+            ol.breadcrumb
+                li.breadcrumb-item
+                    a(href='/') BookX
+                li.breadcrumb-item
+                    a(href='/') Requests
+                li.breadcrumb-item.active #{books[0].owner}
             //---[Main-Tile]---
             .col-xs-12#main-tile
                 .card.text-xs-center.card-inverse.card-success

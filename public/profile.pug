@@ -9,6 +9,10 @@ html(lang="en")
         include includes/head
     body
         .container.mx-auto#main-frame
+            ol.breadcrumb
+                li.breadcrumb-item
+                    a(href='/') BookX
+                li.breadcrumb-item.active Profile
             #accordion(role='tablist', aria-multiselectable='true')
                 .card
                     #headingOne.card-header(role='tab')
@@ -44,7 +48,7 @@ html(lang="en")
                             h5.mb-0
                                 a(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='true', aria-controls='collapseTwo')
                                     | My Books
-                        #collapseTwo.collapse(role='tabpanel', aria-labelledby='headingTwo')
+                        #collapseTwo.collapse.in(role='tabpanel', aria-labelledby='headingTwo')
                             .card-block
                                 -if (needsUpdate)
                                     p Please update and save your public profile name first to add books.

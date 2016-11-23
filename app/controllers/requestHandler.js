@@ -15,7 +15,7 @@ function RequestHandler() {
             "reqdate": new Date()
         };
         console.log(requestDetails+JSON.stringify(doc));
-        if (req.user == requestDetails[1]) return res.redirect('/');
+        //if (req.user == requestDetails[1]) return res.redirect('/');
         mongo.connect(CONNECTION_STRING, function(err, db) {
             if (err) console.log(err);
             var collection = db.collection('books');

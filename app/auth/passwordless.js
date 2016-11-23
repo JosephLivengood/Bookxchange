@@ -32,5 +32,5 @@ module.exports = function (app) {
             });
     }); 
     app.use(passwordless.sessionSupport());
-    app.use(passwordless.acceptToken({ successRedirect: '/profile'}));
+    app.use(passwordless.acceptToken({ successRedirect: '/session'}));
 };

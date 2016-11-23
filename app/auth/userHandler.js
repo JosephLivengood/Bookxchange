@@ -20,10 +20,32 @@ function UserHandler () {
                 {upsert:true, new: true },
                 function(err, doc) {
                     if (err) console.log(err), callback(null, null);
-                    //callback(null, doc.value.email);
-                    req.session.profile = doc.value.name;
-                    req.session.profilerole = doc.value.role;
+                    //req.session.profile = doc.value.name;
+                    //req.session.profilerole = doc.value.role;
                     callback(null, doc.value.email);
+                    db.close();
+                }
+            );
+        });
+    };
+    
+    this.setSession = function(req, res) {
+        mongo.connect(CONNECTION_STRING,function(err,db) {
+            if (err) console.log(err);
+            var collection=db.collection('users');
+            collection.findOne(
+                {email:req.user},
+                function(err, doc) {
+                    if (err) console.log(err);
+                    console.log(doc);
+                    req.session.profile = doc.name;
+                    req.session.profilerole = doc.role;
+                    //we could load UNREAD historyDocs here to show on login
+                    if (doc.name == 'Empty') {
+                        res.redirect('/profile');
+                    } else {
+                        res.redirect('/');
+                    }
                     db.close();
                 }
             );

@@ -19,6 +19,9 @@ module.exports = function (app) {
 	app.route('/login')
 		.get(userHandler.loadLogin)
 		.post(passwordless.requestToken(userHandler.sendToken,{failureRedirect: '/login'}), userHandler.tokenSent);
+		
+	app.route('/session')
+		.get(userHandler.setSession);
 
 	app.route('/profile')
 		.get(passwordless.restricted({failureRedirect: '/login'}), userHandler.showProfile)
@@ -37,10 +40,10 @@ module.exports = function (app) {
 		.get(passwordless.logout(), function (req, res) { res.redirect('/login') });
 		
 	app.route('/requests')
-		.get(requestHandler.viewRequests);
+		.get(passwordless.restricted({failureRedirect: '/login'}), requestHandler.viewRequests);
 		
 	app.route('/viewRequest')
-		.get(bookHandler.getReqBooks)
-		.post(requestHandler.answerRequest);
+		.get(passwordless.restricted({failureRedirect: '/login'}), bookHandler.getReqBooks)
+		.post(passwordless.restricted({failureRedirect: '/login'}), requestHandler.answerRequest);
     
 };
